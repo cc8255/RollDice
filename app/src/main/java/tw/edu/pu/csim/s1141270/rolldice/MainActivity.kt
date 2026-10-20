@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import tw.edu.pu.csim.s1141270.rolldice.ui.theme.RollDiceTheme
@@ -67,9 +69,19 @@ fun Dice(modifier: Modifier = Modifier) {
             painter = painterResource(id = diceImages[diceNumber]),
             "Dice",
             modifier = Modifier
-                .clickable{
-                    diceNumber = (1..6).random()
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = {
+                            // 單擊：產生 1 到 6 的隨機整數
+                            diceNumber = (1..6).random()
+                        },
+                        onDoubleTap = {
+                            // 雙擊：重置為 0 (回到 dice0)
+                            diceNumber = 0
+                        }
+                    )
                 }
+
         )
     }
 }
